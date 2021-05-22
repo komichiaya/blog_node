@@ -1,25 +1,64 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-
+import Blog from "../components/Blog/blog.vue"
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: () => import("../views/Home.vue")
+  // },
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login'),
   },
+  // {
+  //   path: "/edit/:id?",
+  //   name: "Edit",
+  //   props: true,
+  //   component: () => import("../views/Edit.vue")
+  // },
+  // {
+  //   path: "/blog/:id",
+  //   name: "Blog",
+  //   props: true,
+  //   component: () => import("../views/Blog.vue")
+  // },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: "/",
+    name: "Profile",
+    component: () => import("../views/profile/index.vue"),
+    children: [
+      {
+        path: "blog/:id",
+        name: "Blog",
+        props: true,
+        component: Blog
+      }, {
+        path: "edit/:id?",
+        name: "Edit",
+        props: true,
+        component: () => import("../views/Edit.vue")
+      }
+    ]
+  },
+
+
+
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+router.beforeResolve((to, from, next) => {
+  let token = localStorage.getItem("user_token")
+  if (to.name !== "Login") {
+    if (!token) {
+      next("/login")
+      return;
+    }
+  }
+  next()
 })
 
 export default router

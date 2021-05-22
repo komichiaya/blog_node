@@ -1,30 +1,39 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+  <Header v-if="$route.path != '/login'" />
+  <router-view />
 </template>
-
+<script>
+import Header from "./components/Header/Header";
+import { computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+export default {
+  components: { Header },
+  setup(props) {
+    const router = useRouter();
+    const store = useStore();
+    onMounted(() => {});
+  },
+};
+</script>
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+html,
+body {
+  height: 100%;
+}
+.el-main {
+  background-color: #eee !important;
 }
 
-#nav {
-  padding: 30px;
+#app {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+}
+.main {
+  height: 100%;
 }
 </style>
